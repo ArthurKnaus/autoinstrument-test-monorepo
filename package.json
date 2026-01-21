@@ -1,0 +1,19 @@
+{
+  "name": "autoinstrumentation-test-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:backend": "npm run dev --workspace=@monorepo/backend",
+    "dev:frontend": "npm run dev --workspace=@monorepo/frontend",
+    "build": "npm run build --workspaces --if-present",
+    "start": "npm run start --workspaces --if-present",
+    "clean": "rm -rf node_modules packages/*/node_modules packages/*/dist"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
