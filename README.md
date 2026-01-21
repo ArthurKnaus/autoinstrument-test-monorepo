@@ -112,12 +112,38 @@ Chat history is stored in a SQLite database at `packages/backend/data/chat.sqlit
 | GET | `/api/chat/history/:sessionId` | Get chat history for a session |
 | DELETE | `/api/chat/session/:sessionId` | Clear chat session |
 
+## 📊 Sentry Error Tracking
+
+The app includes Sentry for error tracking and performance monitoring in both frontend and backend.
+
+### Setup
+
+1. Create a project in [Sentry](https://sentry.io) (one for Node.js, one for React)
+2. Set environment variables:
+
+```bash
+# Backend
+export SENTRY_DSN=your_backend_sentry_dsn
+
+# Frontend (create .env file in packages/frontend/)
+VITE_SENTRY_DSN=your_frontend_sentry_dsn
+```
+
+### Features
+
+- **Backend**: Error tracking, performance monitoring, Express integration
+- **Frontend**: Error boundary, browser tracing, session replay
+- **Debug routes**: 
+  - `GET /api/debug-sentry` - Test backend error reporting
+  - "Test Sentry Error" button in footer - Test frontend error reporting
+
 ## 🛠 Tech Stack
 
 - **Backend**: Express.js with ES Modules
 - **Frontend**: React 18 + Vite
 - **AI**: Anthropic Claude API (claude-sonnet-4-20250514)
 - **Database**: SQLite with Knex.js query builder
+- **Monitoring**: Sentry (error tracking & performance)
 - **Monorepo**: npm workspaces
 - **Styling**: CSS with custom properties
 
