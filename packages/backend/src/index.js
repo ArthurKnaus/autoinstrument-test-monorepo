@@ -1,18 +1,6 @@
 // Load environment variables first
 import 'dotenv/config';
 
-// Sentry must be imported and initialized before other imports
-import * as Sentry from '@sentry/node';
-
-// Initialize Sentry
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  environment: process.env.NODE_ENV || 'development',
-  tracesSampleRate: 1.0, // Capture 100% of transactions for performance monitoring
-  profilesSampleRate: 1.0, // Profile 100% of sampled transactions
-  integrations: [Sentry.knexIntegration()],
-});
-
 import express from 'express';
 import cors from 'cors';
 import Anthropic from '@anthropic-ai/sdk';
@@ -49,11 +37,6 @@ app.get('/api/greeting', (req, res) => {
   });
 });
 
-// Debug route to test Sentry error reporting
-app.get('/api/debug-sentry', (req, res) => {
-  throw new Error('Sentry test error from backend!');
-});
-
 // Create a new chat session
 app.post('/api/chat/session', async (req, res) => {
   try {
@@ -61,7 +44,6 @@ app.post('/api/chat/session', async (req, res) => {
     await createSession(sessionId);
     res.json({ sessionId });
   } catch (error) {
-    Sentry.captureException(error);
     console.error('Error creating session:', error);
     res.status(500).json({ error: 'Failed to create session' });
   }
@@ -80,7 +62,6 @@ app.get('/api/chat/history/:sessionId', async (req, res) => {
     const history = await getMessages(sessionId);
     res.json({ history });
   } catch (error) {
-    Sentry.captureException(error);
     console.error('Error getting history:', error);
     res.status(500).json({ error: 'Failed to get history' });
   }
@@ -128,7 +109,6 @@ app.post('/api/chat/message', async (req, res) => {
       history: updatedHistory,
     });
   } catch (error) {
-    Sentry.captureException(error);
     console.error('Anthropic API error:', error);
     res.status(500).json({ 
       error: 'Failed to get AI response',
@@ -144,14 +124,10 @@ app.delete('/api/chat/session/:sessionId', async (req, res) => {
     await deleteSession(sessionId);
     res.json({ success: true });
   } catch (error) {
-    Sentry.captureException(error);
     console.error('Error deleting session:', error);
     res.status(500).json({ error: 'Failed to delete session' });
   }
 });
-
-// Sentry error handler - must be before any other error middleware
-Sentry.setupExpressErrorHandler(app);
 
 // Generic error handler
 app.use((err, req, res, next) => {
@@ -164,13 +140,9 @@ initializeDatabase()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`🚀 Backend server running at http://localhost:${PORT}`);
-      if (process.env.SENTRY_DSN) {
-        console.log('📊 Sentry error tracking enabled');
-      }
     });
   })
   .catch((error) => {
-    Sentry.captureException(error);
     console.error('Failed to initialize database:', error);
     process.exit(1);
   });

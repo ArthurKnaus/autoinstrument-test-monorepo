@@ -665,24 +665,6 @@ body {
   color: var(--text-muted);
 }
 
-.sentry-test-btn {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: rgba(255, 107, 107, 0.15);
-  border: 1px solid rgba(255, 107, 107, 0.3);
-  border-radius: var(--radius-sm);
-  color: #ff6b6b;
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.sentry-test-btn:hover {
-  background: rgba(255, 107, 107, 0.25);
-  border-color: rgba(255, 107, 107, 0.5);
-}
-
 /* Error Boundary */
 .error-boundary {
   min-height: 100vh;

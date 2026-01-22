@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import * as Sentry from '@sentry/react';
 import ChatUI from './ChatUI';
 
 function App() {
@@ -137,14 +136,6 @@ function App() {
 
         <footer className="footer">
           <p>Built with Express.js & React • npm workspaces monorepo</p>
-          <button 
-            className="sentry-test-btn"
-            onClick={() => {
-              throw new Error('Sentry test error from frontend!');
-            }}
-          >
-            Test Sentry Error
-          </button>
         </footer>
       </main>
     </div>
